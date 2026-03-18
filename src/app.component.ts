@@ -15,10 +15,6 @@ import { MainComponent } from './main.component'
       flex-direction: column;
       min-height: 100vh;
     }
-    body {
-      margin: 0;
-      padding: 0;
-    }
   `,
 })
 export class AppComponent {
