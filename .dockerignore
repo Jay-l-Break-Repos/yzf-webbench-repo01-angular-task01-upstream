@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+playwright-report
+test-results
+junit.xml
+coverage
+*.log
+.DS_Store
