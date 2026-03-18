@@ -4,6 +4,7 @@ import { Blog } from '../../models/blog.interface';
 
 @Component({
   selector: 'app-blog-list',
+  standalone: true,
   imports: [CommonModule],
   template: `
     <div class="blog-list">

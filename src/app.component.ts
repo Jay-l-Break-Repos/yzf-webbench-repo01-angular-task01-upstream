@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BlogService } from './app/services/blog.service';
-import { Blog } from './app/models/blog.interface';
-import { HeaderComponent } from './app/components/header/header.component';
-import { BlogComponent } from './app/components/blog/blog.component';
-import { BlogListComponent } from './app/components/blog-list/blog-list.component';
+import { Component } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { BlogService } from './app/services/blog.service'
+import { Blog } from './app/models/blog.interface'
+import { HeaderComponent } from './app/components/header/header.component'
+import { BlogComponent } from './app/components/blog/blog.component'
+import { BlogListComponent } from './app/components/blog-list/blog-list.component'
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [CommonModule, HeaderComponent, BlogComponent, BlogListComponent],
   template: `
     <app-header></app-header>
@@ -46,18 +47,18 @@ import { BlogListComponent } from './app/components/blog-list/blog-list.componen
   `,
 })
 export class AppComponent {
-  title = 'angular';
-  blogs: Blog[];
-  selectedBlog: Blog | null = null;
+  title = 'angular'
+  blogs: Blog[] = []
+  selectedBlog: Blog | null = null
 
   constructor(private blogService: BlogService) {
-    this.blogs = this.blogService.getBlogs();
+    this.blogs = this.blogService.getBlogs()
     if (this.blogs.length > 0) {
-      this.selectedBlog = this.blogs[0];
+      this.selectedBlog = this.blogs[0]
     }
   }
 
   onBlogSelected(blog: Blog): void {
-    this.selectedBlog = blog;
+    this.selectedBlog = blog
   }
 }
