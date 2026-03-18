@@ -15,7 +15,7 @@
 const { exec } = require('child_process')
 
 const PROJECT_DIR = process.argv[2] || process.env.EVAL_PROJECT_ROOT || 'src'
-const PORT = process.env.EVAL_PROJECT_PORT || 3005
+const PORT = process.env.EVAL_PROJECT_PORT || 5173
 
 const child = exec(`cd ${PROJECT_DIR} && npx ng serve --port ${PORT}`, {
   env: {
