@@ -1,19 +1,14 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { NgFor, NgIf } from '@angular/common'
 
-export interface Blog {
+interface Blog {
   title: string
   detail: string
 }
 
-const BLOGS: Blog[] = [
-  { title: 'Morning', detail: 'Morning My Friends' },
-  { title: 'Travel', detail: 'I love traveling!' },
-]
-
 @Component({
   selector: 'app-header',
-  standalone: true,
+  imports: [],
   template: `<header class="header"><h1>Hello Blog</h1></header>`,
   styles: `
     .header {
@@ -29,7 +24,6 @@ export class HeaderComponent {}
 
 @Component({
   selector: 'app-blog',
-  standalone: true,
   imports: [NgIf],
   template: `
     <div class="blog" *ngIf="blog">
@@ -48,7 +42,6 @@ export class BlogComponent {
 
 @Component({
   selector: 'app-blog-list',
-  standalone: true,
   imports: [NgFor],
   template: `
     <div class="blog-list">
@@ -82,7 +75,6 @@ export class BlogListComponent {
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [HeaderComponent, BlogComponent, BlogListComponent],
   template: `
     <app-header></app-header>
@@ -114,8 +106,11 @@ export class BlogListComponent {
 })
 export class AppComponent {
   title = 'angular'
-  blogs: Blog[] = BLOGS
-  selectedBlog: Blog | null = BLOGS[0]
+  blogs: Blog[] = [
+    { title: 'Morning', detail: 'Morning My Friends' },
+    { title: 'Travel', detail: 'I love traveling!' },
+  ]
+  selectedBlog: Blog | null = this.blogs[0]
 
   onBlogSelected(blog: Blog): void {
     this.selectedBlog = blog
