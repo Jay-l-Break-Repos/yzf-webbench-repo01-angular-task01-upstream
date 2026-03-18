@@ -1,15 +1,89 @@
-import { Component } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { BlogService } from './app/services/blog.service'
-import { Blog } from './app/models/blog.interface'
-import { HeaderComponent } from './app/components/header/header.component'
-import { BlogComponent } from './app/components/blog/blog.component'
-import { BlogListComponent } from './app/components/blog-list/blog-list.component'
+import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { NgFor, NgIf } from '@angular/common'
+
+export interface Blog {
+  title: string
+  detail: string
+}
+
+const BLOGS: Blog[] = [
+  { title: 'Morning', detail: 'Morning My Friends' },
+  { title: 'Travel', detail: 'I love traveling!' },
+]
+
+@Component({
+  selector: 'app-header',
+  standalone: true,
+  template: `<header class="header"><h1>Hello Blog</h1></header>`,
+  styles: `
+    .header {
+      background-color: #333;
+      color: white;
+      padding: 16px;
+      text-align: center;
+    }
+    h1 { margin: 0; }
+  `,
+})
+export class HeaderComponent {}
+
+@Component({
+  selector: 'app-blog',
+  standalone: true,
+  imports: [NgIf],
+  template: `
+    <div class="blog" *ngIf="blog">
+      <h2 class="blog-title">{{ blog.title }}</h2>
+      <p class="blog-detail">{{ blog.detail }}</p>
+    </div>
+  `,
+  styles: `
+    .blog { padding: 16px; }
+    .blog-title { margin-top: 0; }
+  `,
+})
+export class BlogComponent {
+  @Input() blog: Blog | null = null
+}
+
+@Component({
+  selector: 'app-blog-list',
+  standalone: true,
+  imports: [NgFor],
+  template: `
+    <div class="blog-list">
+      <div
+        class="list-item"
+        *ngFor="let item of blogs"
+        (click)="selectBlog(item)"
+      >
+        {{ item.title }}
+      </div>
+    </div>
+  `,
+  styles: `
+    .blog-list { padding: 16px; }
+    .list-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+    .list-item:hover { background-color: #f0f0f0; }
+  `,
+})
+export class BlogListComponent {
+  @Input() blogs: Blog[] = []
+  @Output() blogSelected = new EventEmitter<Blog>()
+
+  selectBlog(blog: Blog): void {
+    this.blogSelected.emit(blog)
+  }
+}
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, BlogComponent, BlogListComponent],
+  imports: [HeaderComponent, BlogComponent, BlogListComponent],
   template: `
     <app-header></app-header>
     <main class="main">
@@ -27,36 +101,21 @@ import { BlogListComponent } from './app/components/blog-list/blog-list.componen
     </main>
   `,
   styles: `
-    :host {
-      display: block;
-    }
-    .main {
-      padding: 0;
-    }
-    .content {
-      display: flex;
-    }
+    :host { display: block; }
+    .main { padding: 0; }
+    .content { display: flex; }
     .sidebar {
       width: 250px;
       border-right: 1px solid #ddd;
       min-height: calc(100vh - 60px);
     }
-    .detail {
-      flex: 1;
-    }
+    .detail { flex: 1; }
   `,
 })
 export class AppComponent {
   title = 'angular'
-  blogs: Blog[] = []
-  selectedBlog: Blog | null = null
-
-  constructor(private blogService: BlogService) {
-    this.blogs = this.blogService.getBlogs()
-    if (this.blogs.length > 0) {
-      this.selectedBlog = this.blogs[0]
-    }
-  }
+  blogs: Blog[] = BLOGS
+  selectedBlog: Blog | null = BLOGS[0]
 
   onBlogSelected(blog: Blog): void {
     this.selectedBlog = blog
